@@ -3,14 +3,14 @@
  :deps
  {org.clojure/clojure            {:mvn/version "1.12.0"}
   org.clojure/math.combinatorics {:mvn/version "0.3.0"}
-  com.cnuernber/charred          {:mvn/version "1.036"}
+  ; com.cnuernber/charred          {:mvn/version "1.036"}
   com.taoensso/telemere          {:mvn/version "1.0.0-RC5"}
-  hato/hato                      {:mvn/version "1.0.0"}
-  io.github.tonsky/fast-edn      {:mvn/version "1.1.2"}
-  metosin/muuntaja               {:mvn/version "0.6.11"}
-  metosin/reitit                 {:mvn/version "0.7.2"}
-  ring/ring                      {:mvn/version "1.13.0"}
-  ring/ring-defaults             {:mvn/version "0.6.0"}
+  ; hato/hato                      {:mvn/version "1.0.0"}
+  ; io.github.tonsky/fast-edn      {:mvn/version "1.1.2"}
+  ; metosin/muuntaja               {:mvn/version "0.6.11"}
+  ; metosin/reitit                 {:mvn/version "0.7.2"}
+  ; ring/ring                      {:mvn/version "1.13.0"}
+  ; ring/ring-defaults             {:mvn/version "0.6.0"}
   datascript/datascript          {:mvn/version "1.7.4"}
   tonsky/datascript-storage-sql
   {:git/url "https://github.com/tonsky/datascript-storage-sql"

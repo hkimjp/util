@@ -3,6 +3,10 @@
             [clojure.math :as math]
             [clojure.math.combinatorics :as combo]))
 
+(defn hello
+  ([] (hello "Clojure"))
+  ([s] (str "Hello " s)))
+
 (defn- probe
   [msg any]
   (prn msg any)
