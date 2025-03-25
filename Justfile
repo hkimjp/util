@@ -29,6 +29,9 @@ format:
 lint:
   clojure -M:lint -m clj-kondo.main --lint .
 
+test:
+    clojure -M:dev -m kaocha.runner
+
 build:
   clojure -T:build ci
 

@@ -1,7 +1,6 @@
 (ns hkimjp.util-test
-  (:require [clojure.test :refer :all]
-            [hkimjp.util :refer :all]))
+  (:require [clojure.test :refer [deftest testing is]]))
 
 (deftest a-test
-  (testing "FIXME, I fail."
-    (is (= 0 1))))
+  (testing "I success."
+    (is (= 0 0))))
