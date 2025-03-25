@@ -2,7 +2,7 @@
 
 * must exist /target folder.
 
-## 0.2.0-SNAPSHOT
+## 0.2.0 (2025-03-25)
 
 * 当たり前に、deps を削ると jar が小さくなる。
 
