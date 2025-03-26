@@ -6,7 +6,7 @@
    [taoensso.telemere :as t]))
 
 (defn shorten
-  ([s] (shorten s 20))
+  ([s] (shorten s 40))
   ([s n] (let [pat (re-pattern (str "(^.{" n "}).*"))]
            (str/replace-first s pat "$1..."))))
 
@@ -23,7 +23,7 @@
 
 ; even using on-memory database, create useless storage.
 ; is this bad?
-(def storage (make-storage db))
+; (def storage (make-storage db))
 
 (def conn nil)
 
@@ -34,17 +34,20 @@
   (t/log! :info "start on-memory datascript.")
   (def conn (d/create-conn)))
 
-(defn create []
+(defn create [db]
   (t/log! :info "create sqlite3 backended datascript.")
-  (def conn (d/create-conn nil {:storage storage})))
+  (let [storage (make-storage db)]
+    (def conn (d/create-conn nil {:storage storage}))))
 
-(defn restore []
+(defn restore [db]
   (t/log! :info "restore")
-  (def conn (d/restore-conn storage)))
+  (let [storage (make-storage db)]
+    (def conn (d/restore-conn storage))))
 
 (defn stop []
   (t/log! :info "stop")
-  (storage-sql/close storage)
+  ; safe?
+  ; (storage-sql/close storage)
   (def conn nil))
 
 (defmacro q [query & inputs]
