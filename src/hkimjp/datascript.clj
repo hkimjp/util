@@ -6,7 +6,7 @@
    [taoensso.telemere :as t]))
 
 (defn shorten
-  ([s] (shorten s 20))
+  ([s] (shorten s 40))
   ([s n] (let [pat (re-pattern (str "(^.{" n "}).*"))]
            (str/replace-first s pat "$1..."))))
 
