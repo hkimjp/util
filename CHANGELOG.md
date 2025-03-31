@@ -2,7 +2,7 @@
 
 * inline `def`.
 
-## 0.2.1-SNAPSHOT
+## 0.2.1 (2025-03-31)
 
 * added - org.slf4j/slf4j-simple  {:mvn/version "2.0.17"}
 * warn if `target/db.sqlite` does not exist.
