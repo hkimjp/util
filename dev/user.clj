@@ -3,6 +3,7 @@
             [hkimjp.datascript :as d]
             [hkimjp.util :as u]))
 (comment
+
   (u/hello "github")
   (take 10 u/primes)
 
@@ -10,7 +11,13 @@
   (b/time+ (b/tarai 10 5 3))
   (b/quick (b/tarai 10 5 3))
 
+  (d/create)
+  (d/conn?)
+  (d/stop)
+  (d/conn?)
+
   (d/start)
+
   (d/put [{:db/add -1 :name "hirosi"}
           {:db/add -1 :family "kimura"}
           {:db/add -1 :age 62}])
@@ -20,6 +27,7 @@
          [?e :family ?family]
          [?e :age ?age]])
 
+  (d/restore "target/db.sqlite")
   (d/q '[:find ?e
          :where
          [?e]])
@@ -30,4 +38,6 @@
 
   (d/pull 4)
   (d/pull [:name] 4)
+
+  (d/stop)
   :rcf)

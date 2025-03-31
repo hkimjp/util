@@ -1,16 +1,12 @@
 (ns hkimjp.benchmark
   (:require [criterium.core :refer [with-progress-reporting quick-bench]]))
 
-#_(defmacro quick [expr]
-    `(with-progress-reporting
-       (quick-bench ~expr :verbose)))
-
 (defmacro with-progress [expr]
   `(with-progress-reporting
-     (quick-bench ~expr))) ; without :verbose
+     (quick-bench ~expr :verbose)))
 
 (defmacro quick [expr]
-  `(quick-bench ~expr)) ; without progress reporting)
+  `(quick-bench ~expr))
 
 (let [time*
       (fn [^long duration-in-ms f]

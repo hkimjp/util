@@ -10,21 +10,23 @@
   ([s n] (let [pat (re-pattern (str "(^.{" n "}).*"))]
            (str/replace-first s pat "$1..."))))
 
-(def db "target/db.sqlite")
-
 (defn make-storage [db]
-  (let [datasource (doto (org.sqlite.SQLiteDataSource.)
-                     (.setUrl (str "jdbc:sqlite:" db)))
-        pooled-datasource (storage-sql/pool
-                           datasource
-                           {:max-conn 10
-                            :max-idle-conn 4})]
-    (storage-sql/make pooled-datasource {:dbtype :sqlite})))
+  (t/log! :info (str "create pooled-datasource " db))
+  (try
+    (let [datasource (doto (org.sqlite.SQLiteDataSource.)
+                       (.setUrl (str "jdbc:sqlite:" db)))
+          pooled-datasource (storage-sql/pool
+                             datasource
+                             {:max-conn 10
+                              :max-idle-conn 4})]
+      (storage-sql/make pooled-datasource {:dbtype :sqlite}))
+    (catch Exception e
+      (t/log! :error (.getMessage e))
+      (throw (Exception. "db dir does not exist.")))))
 
-; even using on-memory database, create useless storage.
-; is this bad?
-(def storage (make-storage db))
+(def storage (atom nil))
 
+; FIXME: inline def
 (def conn nil)
 
 (defn conn? []
@@ -34,17 +36,23 @@
   (t/log! :info "start on-memory datascript.")
   (def conn (d/create-conn)))
 
-(defn create []
-  (t/log! :info "create sqlite3 backended datascript.")
-  (def conn (d/create-conn nil {:storage storage})))
+(defn create
+  ([] (create "target/db.sqlite"))
+  ([db]
+   (t/log! :info "create sqlite3 backended datascript.")
+   (reset! storage (make-storage db))
+   (def conn (d/create-conn nil {:storage @storage}))))
 
-(defn restore []
-  (t/log! :info "restore")
-  (def conn (d/restore-conn storage)))
+(defn restore
+  ([] (restore "target/db.sqlite"))
+  ([db]
+   (t/log! :info "restore")
+   (reset! storage (make-storage db))
+   (def conn (d/restore-conn @storage))))
 
 (defn stop []
   (t/log! :info "stop")
-  (storage-sql/close storage)
+  (storage-sql/close @storage)
   (def conn nil))
 
 (defmacro q [query & inputs]
@@ -57,6 +65,7 @@
 
 (defn pull
   ([eid] (pull ['*] eid))
-  ([selector eid] (t/log! :info (str "pull " selector " " eid))
-                  (d/pull @conn selector eid)))
+  ([selector eid]
+   (t/log! :info (str "pull " selector " " eid))
+   (d/pull @conn selector eid)))
 
