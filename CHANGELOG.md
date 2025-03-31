@@ -1,6 +1,5 @@
 ## Unreleased
 
-
 * avoid inline def.
 
 ## 0.2.1 (2025-03-31)
@@ -9,6 +8,8 @@
 * warn if `target/db.sqlite` does not exist.
 * log folder?
 * BRAKING - datascript/create, restore takes argument `db`, such as "target/db.sqlite".
+* updated create, restore - if no db given, choose `target/db.sqlite`.
+
 
 ## 0.2.0 (2025-03-25)
 
