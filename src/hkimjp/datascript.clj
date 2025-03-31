@@ -11,6 +11,7 @@
            (str/replace-first s pat "$1..."))))
 
 (defn make-storage [db]
+  (t/log! :info (str "create pooled-datasource " db))
   (try
     (let [datasource (doto (org.sqlite.SQLiteDataSource.)
                        (.setUrl (str "jdbc:sqlite:" db)))
@@ -25,6 +26,7 @@
 
 (def storage (atom nil))
 
+; FIXME: inline def
 (def conn nil)
 
 (defn conn? []
@@ -63,6 +65,7 @@
 
 (defn pull
   ([eid] (pull ['*] eid))
-  ([selector eid] (t/log! :info (str "pull " selector " " eid))
-                  (d/pull @conn selector eid)))
+  ([selector eid]
+   (t/log! :info (str "pull " selector " " eid))
+   (d/pull @conn selector eid)))
 

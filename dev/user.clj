@@ -11,7 +11,7 @@
   (b/time+ (b/tarai 10 5 3))
   (b/quick (b/tarai 10 5 3))
 
-  (d/create "target/db.sqlite")
+  (d/create)
   (d/conn?)
   (d/stop)
   (d/conn?)
@@ -38,5 +38,6 @@
 
   (d/pull 4)
   (d/pull [:name] 4)
+
   (d/stop)
   :rcf)
