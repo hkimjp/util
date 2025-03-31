@@ -1,8 +1,11 @@
 ## Unreleased
 
-* must exist /target folder.
+* inline `def`.
 
 ## 0.3.0-SNAPSHOT
+
+* added - org.slf4j/slf4j-simple  {:mvn/version "2.0.17"}
+* warn if `target/db.sqlite` does not exist.
 
 ## 0.2.0 (2025-03-25)
 
