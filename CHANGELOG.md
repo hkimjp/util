@@ -1,6 +1,6 @@
 ## Unreleased
 
-* inline `def`.
+* avoid inline def.
 
 ## 0.2.1 (2025-03-31)
 
