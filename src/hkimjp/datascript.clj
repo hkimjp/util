@@ -60,7 +60,7 @@
   `(d/q ~query @conn ~@inputs))
 
 (defn put [fact]
-  (t/log! :info (str "put " (shorten facts)))
+  (t/log! :info (str "put " (shorten fact)))
   (d/transact! conn [facts]))
 
 (defn puts [facts]
