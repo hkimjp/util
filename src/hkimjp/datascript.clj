@@ -16,9 +16,9 @@
     (let [datasource (doto (org.sqlite.SQLiteDataSource.)
                        (.setUrl (str "jdbc:sqlite:" db)))
           pooled-datasource (storage-sql/pool
-                             datasource
-                             {:max-conn 10
-                              :max-idle-conn 4})]
+                              datasource
+                              {:max-conn 10
+                               :max-idle-conn 4})]
       (storage-sql/make pooled-datasource {:dbtype :sqlite}))
     (catch Exception e
       (t/log! :error (.getMessage e))
@@ -61,7 +61,7 @@
 
 (defn put [fact]
   (t/log! :info (str "put " (shorten fact)))
-  (d/transact! conn [facts]))
+  (d/transact! conn [fact]))
 
 (defn puts [facts]
   (t/log! :info (str "put " (shorten facts)))
