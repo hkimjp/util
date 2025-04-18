@@ -6,20 +6,21 @@ My first clojure library. under construcion.
 
 ## Usage
 
-
 * hkimjp.util
 * hkimjp.benchmark
 * hkimjp.datascript
 
 Add this to deps.edn:
 
-    io.github.hkimjp/util {:git/tag "0.2.0", :git/sha "6ab6980"}]
+    io.github.hkimjp/util {:git/tag "0.2.0", :git/sha "6ab6980"}
 
+then,
 
+```clojure
 (require '[hkimjp.util :as u]
          '[hkimjp.datascript :as d]
          '[hkimjp.benchmark :a b])
-
+```
 
 Run the project directly, via `:exec-fn`:
 
@@ -61,7 +62,6 @@ FIXME: listing of options this app accepts.
 ### Any Other Sections
 ### That You Think
 ### Might be Useful
->>>>>>> refs/remotes/origin/develop
 
 ## License
 

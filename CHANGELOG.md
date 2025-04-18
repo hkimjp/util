@@ -3,8 +3,10 @@
 * avoid inline def.
 * benchmark/datascript/util を別々にしといたほうが使い勝手いいか？
 
-## 0.2.2-SNAPSHOT (2025-04-01)
+## 0.2.2-SNAPSHOT
 
+* added datascript: (put fact) and (puts facts)
+* changed datascript log level from :info to :debug.
 
 ## 0.2.1 (2025-03-31)
 
