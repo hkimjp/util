@@ -1,7 +1,11 @@
 ## Unreleased
 
 * avoid inline def.
-* benchmark/datascript/util を別々にしといたほうが使い勝手いいか？
+* separate benchmark/datascript/util?
+
+## 0.2.5-SNAPSHOT
+
+* changed `just dev` -> `just repl`, `just dev-container` -> `just container-repl`.
 
 ## 0.2.4 (2025-04-18)
 

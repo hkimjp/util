@@ -11,10 +11,10 @@ upgrade:
 upgrade-force:
   clojure -Tantq outdated :upgrade true :force true
 
-dev:
+repl:
   clojure -M:dev -m nrepl.cmdline
 
-dev-container:
+container-repl:
   clojure -M:dev -m nrepl.cmdline -b 0.0.0.0 -p 7777
 
 run:
