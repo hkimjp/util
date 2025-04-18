@@ -6,7 +6,7 @@
    [taoensso.telemere :as t]))
 
 (defn shorten
-  ([s] (shorten s 20))
+  ([s] (shorten s 40))
   ([s n] (let [pat (re-pattern (str "(^.{" n "}).*"))]
            (str/replace-first s pat "$1..."))))
 
@@ -59,7 +59,11 @@
   (t/log! :info (str "q " (shorten query)))
   `(d/q ~query @conn ~@inputs))
 
-(defn put [facts]
+(defn put [fact]
+  (t/log! :info (str "put " (shorten facts)))
+  (d/transact! conn [facts]))
+
+(defn puts [facts]
   (t/log! :info (str "put " (shorten facts)))
   (d/transact! conn facts))
 
