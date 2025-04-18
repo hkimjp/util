@@ -3,6 +3,10 @@
 * avoid inline def.
 * benchmark/datascript/util を別々にしといたほうが使い勝手いいか？
 
+## 0.2.4 (2025-04-18)
+
+* typo, one more.
+
 ## 0.2.3 (2025-04-18)
 
 * fix typo
