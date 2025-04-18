@@ -1,9 +1,14 @@
 (ns hkimjp.datascript
   (:require
+   [clojure.java.io :as io]
    [clojure.string :as str]
    [datascript.core :as d]
    [datascript.storage.sql.core :as storage-sql]
    [taoensso.telemere :as t]))
+
+(defonce storage (atom nil))
+
+(def conn nil)
 
 (defn shorten
   ([s] (shorten s 40))
@@ -16,44 +21,50 @@
     (let [datasource (doto (org.sqlite.SQLiteDataSource.)
                        (.setUrl (str "jdbc:sqlite:" db)))
           pooled-datasource (storage-sql/pool
-                              datasource
-                              {:max-conn 10
-                               :max-idle-conn 4})]
+                             datasource
+                             {:max-conn 10
+                              :max-idle-conn 4})]
       (storage-sql/make pooled-datasource {:dbtype :sqlite}))
     (catch Exception e
       (t/log! :error (.getMessage e))
       (throw (Exception. "db dir does not exist.")))))
 
-(def storage (atom nil))
-
-; FIXME: inline def
-(def conn nil)
-
 (defn conn? []
   (d/conn? conn))
 
-(defn start []
-  (t/log! :info "start on-memory datascript.")
-  (def conn (d/create-conn)))
-
-(defn create
-  ([] (create "target/db.sqlite"))
-  ([db]
-   (t/log! :info "create sqlite3 backended datascript.")
-   (reset! storage (make-storage db))
-   (def conn (d/create-conn nil {:storage @storage}))))
+(defn create! [db]
+  (t/log! :info "create sqlite3 backended datascript.")
+  (reset! storage (make-storage db))
+  (def conn (d/create-conn nil {:storage @storage})))
 
 (defn restore
   ([] (restore "target/db.sqlite"))
   ([db]
-   (t/log! :info "restore")
+   (t/log! {:level :info :db db} "restore")
    (reset! storage (make-storage db))
    (def conn (d/restore-conn @storage))))
+
+(defn start
+  ([] (start "target/db.sqlite"))
+  ([db]
+   (t/log! {:level :info :db db} "start on-memory datascript.")
+   (if (.exists (io/file db))
+     (restore db)
+     (create! db))))
 
 (defn stop []
   (t/log! :info "stop")
   (storage-sql/close @storage)
   (def conn nil))
+
+(comment
+  (create! "target/db.sqlite")
+  (start)
+  (restore)
+  (conn?)
+  (stop)
+  :rcf)
+;; ----------------------------------------
 
 (defmacro q [query & inputs]
   (t/log! :info (str "q " (shorten query)))
