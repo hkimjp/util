@@ -3,7 +3,7 @@
 * avoid inline def.
 * separate benchmark/datascript/util?
 
-## 0.2.5-SNAPSHOT
+## 0.2.5 (2025-04-19)
 
 * changed `just dev` -> `just repl`, `just dev-container` -> `just container-repl`.
 
