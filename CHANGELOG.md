@@ -3,6 +3,10 @@
 * avoid inline def.
 * benchmark/datascript/util を別々にしといたほうが使い勝手いいか？
 
+## 0.2.3 (2025-04-18)
+
+* fix typo
+
 ## 0.2.2 (2025-04-18)
 
 * added datascript: (put fact) and (puts facts)
