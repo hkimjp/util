@@ -3,7 +3,7 @@
 * avoid inline def.
 * separate benchmark/datascript/util?
 
-## 0.3.1-SNAPSHOT
+## 0.3.1 (2025-04-19)
 
 * did now work in micro-x.
 
