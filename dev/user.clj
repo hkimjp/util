@@ -14,35 +14,9 @@
   (b/time+ (b/tarai 10 5 3))
   (b/quick (b/tarai 10 5 3))
 
-  (d/start)
+  (d/start "target/db.sqlite")
 
   (d/conn?)
-
-  (d/puts [{:db/add -1 :name "hirosi"}
-           {:db/add -1 :family "kimura"}
-           {:db/add -1 :age 62}])
-
-  (d/q '[:find ?e ?name ?family ?age
-         :where
-         [?e :name ?name]
-         [?e :family ?family]
-         [?e :age ?age]])
-
-  (d/q '[:find ?e
-         :where
-         [?e]])
-
-  (d/puts [{:db/id -1 :name "hirosi"}
-           {:db/id -1 :family "kimura"}
-           {:db/id -1 :age 62}])
-
-  (d/pull 11)
-  (d/pull [:name] 4)
-
-  (d/puts [{:db/add -1 :name "name"}
-           {:db/add -1 :family "family"}
-           {:db/add -1 :age 30}])
-  (d/pull 14)
 
   (d/stop)
   :rcf)

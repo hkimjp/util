@@ -2,6 +2,12 @@
 
 * avoid inline def.
 * separate benchmark/datascript/util?
+* on-memory mode.
+
+## 0.3.0 (2025-04-19)
+
+* (start) ... on-memory mode
+* (start db) ... backend sqlite mode
 
 ## 0.2.5 (2025-04-19)
 
