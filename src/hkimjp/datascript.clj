@@ -64,6 +64,7 @@
   (conn?)
   (stop)
   :rcf)
+
 ;; ----------------------------------------
 
 (defmacro q [query & inputs]
