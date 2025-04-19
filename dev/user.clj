@@ -1,11 +1,11 @@
 (ns user
-  (:require [clojure.java.io :as io]
-            [hkimjp.benchmark :as b]
+  (:require [hkimjp.benchmark :as b]
             [hkimjp.datascript :as d]
             [hkimjp.util :as u]))
 
 (comment
-  (.exists (io/file "target/db.sqlite"))
+  (def c (hc/build-http-client {:connect-timeout 10000
+                                :redirect-policy :always}))
 
   (u/hello "github")
   (take 10 u/primes)
