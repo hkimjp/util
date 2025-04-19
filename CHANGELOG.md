@@ -4,6 +4,10 @@
 * separate benchmark/datascript/util?
 * on-memory mode.
 
+## 0.3.0-SNAPSHOT
+
+* (start) ... on-memory mode
+* (start db) ... backend sqlite mode
 
 ## 0.2.5 (2025-04-19)
 

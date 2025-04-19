@@ -32,10 +32,14 @@
 (defn conn? []
   (d/conn? conn))
 
-(defn create! [db]
-  (t/log! :info "create sqlite3 backended datascript.")
-  (reset! storage (make-storage db))
-  (def conn (d/create-conn nil {:storage @storage})))
+(defn create!
+  ([]
+   (t/log! :info "create! on-memory datascript.")
+   (def conn (d/create-conn nil)))
+  ([db]
+   (t/log! {:level :info :db db} "create! sqlite backended datascript.")
+   (reset! storage (make-storage db))
+   (def conn (d/create-conn nil {:storage @storage}))))
 
 (defn restore
   ([] (restore "target/db.sqlite"))
@@ -45,9 +49,11 @@
    (def conn (d/restore-conn @storage))))
 
 (defn start
-  ([] (start "target/db.sqlite"))
+  ([]
+   (t/log! :info "start on-memory datascript.")
+   (create!))
   ([db]
-   (t/log! {:level :info :db db} "start on-memory datascript.")
+   (t/log! {:level :info :db db} "start datascript with sqlite backend.")
    (if (.exists (io/file db))
      (restore db)
      (create! db))))
