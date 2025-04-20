@@ -42,7 +42,6 @@
    (def conn (d/create-conn nil {:storage @storage}))))
 
 (defn restore
-  ([] (restore "target/db.sqlite"))
   ([db]
    (t/log! {:level :info :db db} "restore")
    (reset! storage (make-storage db))
@@ -64,9 +63,10 @@
   (def conn nil))
 
 (comment
-  (create! "target/db.sqlite")
   (start)
-  (restore)
+  (conn?)
+  (stop)
+  (start "target/db.sqlite")
   (conn?)
   (stop)
   :rcf)
@@ -90,4 +90,3 @@
   ([selector eid]
    (t/log! :info (str "pull " selector " " eid))
    (d/pull @conn selector eid)))
-
