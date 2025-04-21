@@ -47,7 +47,8 @@
   ([db]
    (t/log! {:level :info :db db} "restore")
    (reset! storage (make-storage db))
-   (alter-var-root #'conn
+   (alter-var-root
+     #'conn
      (constantly (d/restore-conn @storage))))) ;!!
 
 (defn start
@@ -56,10 +57,9 @@
    (create!))
   ([db]
    (t/log! {:level :info :db db} "start datascript with sqlite backend.")
-   (let [db (identity db)]
-     (if (.exists db)
-       (restore db)
-       (create! db)))))
+   (if (.exists (io/file db))
+     (restore db)
+     (create! db))))
 
 (defn stop []
   (t/log! :info "stop")
