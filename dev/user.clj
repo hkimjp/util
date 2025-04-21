@@ -1,5 +1,6 @@
 (ns user
   (:require
+   [clojure.java.io :as io]
    [hkimjp.benchmark :as b]
    [hkimjp.datascript :as d]
    [hkimjp.util :as u]))
@@ -13,6 +14,7 @@
   (b/quick (b/tarai 10 5 3))
 
   (d/start "storage/db.sqlite")
+
   (d/conn?)
 
   (d/puts [{:db/add -1, :name "hiroshi", :age 18, :like "clojure"}])
@@ -33,7 +35,7 @@
 
   (d/stop)
 
-  (d/start "storage/db.sqlite")
+  (d/start (io/file "storage/db.sqlite"))
 
   (d/conn?)
 

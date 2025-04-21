@@ -3,6 +3,10 @@
 * avoid inline def.
 * separate benchmark/datascript/util?
 
+## 0.4.1 (2025-04-21)
+
+* added stroage/.keep
+
 ## 0.4.0 (2025-04-21)
 
 * datascript.clj - replaced `(def conn (...))` with `(alter-var-root #'conn (constantly ...))`

@@ -16,7 +16,6 @@
            (str/replace-first s pat "$1..."))))
 
 (defn make-storage [db]
-  (t/log! :info (str "create pooled-datasource " db))
   (try
     (let [datasource (doto (org.sqlite.SQLiteDataSource.)
                        (.setUrl (str "jdbc:sqlite:" db)))
@@ -24,6 +23,7 @@
                              datasource
                              {:max-conn 10
                               :max-idle-conn 4})]
+      (t/log! {:lelvel :info :data {:datasource (str datasource)}} "make-storage")
       (storage-sql/make pooled-datasource {:dbtype :sqlite}))
     (catch Exception e
       (t/log! :error (.getMessage e))
@@ -37,23 +37,25 @@
    (t/log! :info "create! on-memory datascript.")
    (alter-var-root #'conn (constantly (d/create-conn nil))))
   ([db]
-   (t/log! {:level :info :db db} "create! sqlite backended datascript.")
+   (t/log! {:level :info :data {:db db}} "create! sqlite backended datascript.")
    (reset! storage (make-storage db))
    (alter-var-root #'conn
                    (constantly (d/create-conn nil {:storage @storage})))))
 
 (defn restore
   ([db]
-   (t/log! {:level :info :db db} "restore")
+   (t/log! {:level :info :data {:db db}} "restore")
    (reset! storage (make-storage db))
-   (alter-var-root #'conn (constantly (d/restore-conn @storage)))))
+   (alter-var-root #'conn
+                   (constantly (d/restore-conn @storage)))))
 
 (defn start
   ([]
    (t/log! :info "start on-memory datascript.")
    (create!))
   ([db]
-   (t/log! {:level :info :db db} "start datascript with sqlite backend.")
+   (t/log! {:level :info :data {:db db}}
+           "start datascript with sqlite backend.")
    (if (.exists (io/file db))
      (restore db)
      (create! db))))
@@ -64,10 +66,10 @@
   (alter-var-root #'conn (constantly nil)))
 
 (comment
-  (start)
+  (start "storage/db.sqlite")
   (conn?)
   (stop)
-  (start "target/db.sqlite")
+  (start "storage/db.sqlite")
   (conn?)
   (stop)
   :rcf)
