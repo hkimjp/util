@@ -56,7 +56,7 @@
    (create!))
   ([db]
    (t/log! {:level :info :db db} "start datascript with sqlite backend.")
-   (let [db (io/file db)]
+   (let [db (identity db)]
      (if (.exists db)
        (restore db)
        (create! db)))))

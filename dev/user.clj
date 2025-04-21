@@ -1,5 +1,6 @@
 (ns user
   (:require
+   [clojure.java.io :as io]
    [hkimjp.benchmark :as b]
    [hkimjp.datascript :as d]
    [hkimjp.util :as u]))
@@ -12,7 +13,7 @@
   (b/time+ (b/tarai 10 5 3))
   (b/quick (b/tarai 10 5 3))
 
-  (d/start "storage/db.sqlite")
+  (d/start (io/file "storage/db.sqlite"))
 
   (d/conn?)
 
@@ -34,7 +35,7 @@
 
   (d/stop)
 
-  (d/start "storage/db.sqlite")
+  (d/start (io/file "storage/db.sqlite"))
 
   (d/conn?)
 
