@@ -3,6 +3,17 @@
 * avoid inline def.
 * separate benchmark/datascript/util?
 
+## 0.4.6 (2025-04-21)
+
+| :file    | :name                         | :current   | :latest    |
+|--------- | ----------------------------- | ---------- | -----------|
+| deps.edn | clj-kondo/clj-kondo           | 2024.11.14 | 2025.04.07 |
+|          | dev.weavejester/cljfmt        | 0.13.0     | 0.13.1     |
+|          | io.github.clojure/tools.build | v0.9.2     | v0.10.8    |
+|          | io.github.tonsky/clojure-plus | 1.3.1      | 1.3.3      |
+| pom.xml  | org.clojure/clojure           | 0.4.5      | 1.12.0     |
+
+
 ## 0.4.1 (2025-04-21)
 
 * added stroage/.keep
