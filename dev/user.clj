@@ -39,7 +39,7 @@
 
   (d/conn?)
 
-  (d/q '[:find ?name ?age ?like
+  (d/q '[:find ?e ?name ?age ?like
          :where
          [?e :name ?name]
          [?e :age ?age]
@@ -49,6 +49,8 @@
          :where
          [?e :name ?name]
          [?e :database ?database]])
+
+  (d/pull 3)
 
   (d/stop)
 
