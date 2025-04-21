@@ -10,12 +10,12 @@
 
 (def conn nil)
 
-(defn shorten
+(defn- shorten
   ([s] (shorten s 40))
   ([s n] (let [pat (re-pattern (str "(^.{" n "}).*"))]
            (str/replace-first s pat "$1..."))))
 
-(defn make-storage [db]
+(defn- make-storage [db]
   (try
     (let [datasource (doto (org.sqlite.SQLiteDataSource.)
                        (.setUrl (str "jdbc:sqlite:" db)))
@@ -31,29 +31,29 @@
 (defn conn? []
   (d/conn? conn))
 
-(defn create!
+(defn- create!
   ([]
    (t/log! :info "create! on-memory datascript.")
    (alter-var-root #'conn (constantly (d/create-conn nil))))
   ([db]
-   (t/log! {:level :info :data {:db db}} "create! sqlite backended datascript.")
+   (t/log! :info "create! sqlite backended datascript.")
    (reset! storage (make-storage db))
    (alter-var-root #'conn
                    (constantly (d/create-conn nil {:storage @storage})))))
 
-(defn restore
+(defn- restore
   ([db]
-   (t/log! {:level :info :data {:db db}} "restore")
+   (t/log! :info "restore")
    (reset! storage (make-storage db))
-   (alter-var-root #'conn (constantly (d/restore-conn @storage)))))
+   (alter-var-root #'conn
+                   (constantly (d/restore-conn @storage)))))
 
 (defn start
   ([]
    (t/log! :info "start on-memory datascript.")
    (create!))
   ([db]
-   (t/log! {:level :info :data {:db db}}
-           "start datascript with sqlite backend.")
+   (t/log! :info "start datascript with sqlite backend.")
    (if (.exists (io/file db))
      (restore db)
      (create! db))))
@@ -90,7 +90,7 @@
   ([eid] (pull ['*] eid))
   ([selector eid]
    (t/log! :info (str "pull " selector " " eid))
-   (d/pull @#'conn selector eid)))
+   (d/pull @conn selector eid)))
 
 (comment
   (start)
