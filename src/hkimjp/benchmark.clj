@@ -1,6 +1,39 @@
 (ns hkimjp.benchmark
   (:require [criterium.core :refer [with-progress-reporting quick-bench]]))
 
+;; sample. tarai.
+(defn tarai
+  [x y z]
+  (if (<= x y)
+    y
+    (tarai (tarai (dec x) y z)
+           (tarai (dec y) z x)
+           (tarai (dec z) x y))))
+
+(defn tarai-memo [x y z]
+  (let [memo (atom {})]
+    (letfn [(tarai [x y z]
+              (or (get @memo [x y z])
+                  (if (<= x y)
+                    y
+                    (let [result (tarai (tarai (- x 1) y z)
+                                        (tarai (- y 1) z x)
+                                        (tarai (- z 1) x y))]
+                      (swap! memo assoc [x y z] result)
+                      result))))]
+      (tarai x y z))))
+
+(defn tarai-lazy [x y z]
+  (letfn [(tarai [fx fy fz]
+            (if (<= (fx) (fy))
+              (fy)
+              (tarai (fn [] (tarai (fn [] (- (fx) 1)) fy fz))
+                     (fn [] (tarai (fn [] (- (fy) 1)) fz fx))
+                     (fn [] (tarai (fn [] (- (fz) 1)) fx fy)))))]
+    (tarai (fn [] x) (fn [] y) (fn [] z))))
+
+;;-----------------------------
+
 (defmacro with-progress [expr]
   `(with-progress-reporting
      (quick-bench ~expr :verbose)))
@@ -45,12 +78,24 @@
                             [2000 (cons ?duration-in-ms body)])]
       `(~time* ~duration (fn [] ~@body)))))
 
+
+
 (defn heap []
   (let [u (.getHeapMemoryUsage (java.lang.management.ManagementFactory/getMemoryMXBean))
         used (/ (.getUsed u) 1e6)
         total (/ (.getMax u) 1e6)]
     (format "Used: %.0f/%.0f MB (%.0f%%), free: %.0f MB" used total (/ used total 0.01)
             (/ (.freeMemory (Runtime/getRuntime)) 1e6))))
+
+(comment
+  (time (tarai 10 5 3))
+  (with-progress (tarai 10 5 3))
+  (quick (tarai 10 5 3))
+  (time+ (tarai 10 5 3))
+  (time+ (tarai-memo 10 5 3))
+  (time+ (tarai-lazy 10 5 3))
+  (heap)
+  :rcf)
 
 ; what is this?
 ;
@@ -68,34 +113,3 @@
 ;   ; Execution error (FileNotFoundException) at user/eval11131 (REPL:55).
 ;   ; Could not locate clj_async_profiler/core__init.class, clj_async_profiler/core.clj or clj_async_profiler/core.cljc on classpath. Please check that namespaces with dashes use underscores in the Clojure file name.
 ;   :rcf)
-
-; tarai
-(defn tarai
-  [x y z]
-  (if (<= x y)
-    y
-    (tarai (tarai (dec x) y z)
-           (tarai (dec y) z x)
-           (tarai (dec z) x y))))
-
-(defn tarai-memo [x y z]
-  (let [memo (atom {})]
-    (letfn [(tarai [x y z]
-              (or (get @memo [x y z])
-                  (if (<= x y)
-                    y
-                    (let [result (tarai (tarai (- x 1) y z)
-                                        (tarai (- y 1) z x)
-                                        (tarai (- z 1) x y))]
-                      (swap! memo assoc [x y z] result)
-                      result))))]
-      (tarai x y z))))
-
-(defn tarai-lazy [x y z]
-  (letfn [(tarai [fx fy fz]
-            (if (<= (fx) (fy))
-              (fy)
-              (tarai (fn [] (tarai (fn [] (- (fx) 1)) fy fz))
-                     (fn [] (tarai (fn [] (- (fy) 1)) fz fx))
-                     (fn [] (tarai (fn [] (- (fz) 1)) fx fy)))))]
-    (tarai (fn [] x) (fn [] y) (fn [] z))))

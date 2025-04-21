@@ -3,6 +3,10 @@
 * avoid inline def.
 * separate benchmark/datascript/util?
 
+## 0.4.0 (2025-04-21)
+
+* datascript.clj - replaced `(def conn (...))` with `(alter-var-root #'conn (constantly ...))`
+
 ## 0.3.1 (2025-04-19)
 
 * did now work in micro-x.
@@ -10,7 +14,7 @@
 ## 0.3.0 (2025-04-19)
 
 * (start) ... on-memory mode
-* (start db) ... backend sqlite mode
+* (start "db") ... backend sqlite mode. "db" is the path of sqlite db saved.
 
 ## 0.2.5 (2025-04-19)
 

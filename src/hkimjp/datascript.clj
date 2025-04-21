@@ -35,18 +35,18 @@
 (defn create!
   ([]
    (t/log! :info "create! on-memory datascript.")
-   (def conn (d/create-conn nil)))
+   (alter-var-root #'conn (constantly (d/create-conn nil))))
   ([db]
    (t/log! {:level :info :db db} "create! sqlite backended datascript.")
    (reset! storage (make-storage db))
-   (def conn (d/create-conn nil {:storage @storage}))))
+   (alter-var-root #'conn
+                   (constantly (d/create-conn nil {:storage @storage})))))
 
 (defn restore
-  ([] (restore "target/db.sqlite"))
   ([db]
    (t/log! {:level :info :db db} "restore")
    (reset! storage (make-storage db))
-   (def conn (d/restore-conn @storage))))
+   (alter-var-root #'conn (constantly (d/restore-conn @storage)))))
 
 (defn start
   ([]
@@ -61,12 +61,13 @@
 (defn stop []
   (t/log! :info "stop")
   (storage-sql/close @storage)
-  (def conn nil))
+  (alter-var-root #'conn (constantly nil)))
 
 (comment
-  (create! "target/db.sqlite")
   (start)
-  (restore)
+  (conn?)
+  (stop)
+  (start "target/db.sqlite")
   (conn?)
   (stop)
   :rcf)
@@ -89,5 +90,11 @@
   ([eid] (pull ['*] eid))
   ([selector eid]
    (t/log! :info (str "pull " selector " " eid))
-   (d/pull @conn selector eid)))
+   (d/pull @#'conn selector eid)))
 
+(comment
+  (start)
+  (put [{:db/id 100 :fact "fact"}])
+  (pull 100)
+  (stop)
+  :rcf)
