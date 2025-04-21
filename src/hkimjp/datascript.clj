@@ -21,9 +21,9 @@
     (let [datasource (doto (org.sqlite.SQLiteDataSource.)
                        (.setUrl (str "jdbc:sqlite:" db)))
           pooled-datasource (storage-sql/pool
-                             datasource
-                             {:max-conn 10
-                              :max-idle-conn 4})]
+                              datasource
+                              {:max-conn 10
+                               :max-idle-conn 4})]
       (storage-sql/make pooled-datasource {:dbtype :sqlite}))
     (catch Exception e
       (t/log! :error (.getMessage e))
@@ -39,14 +39,16 @@
   ([db]
    (t/log! {:level :info :db db} "create! sqlite backended datascript.")
    (reset! storage (make-storage db))
-   (alter-var-root #'conn
-                   (constantly (d/create-conn nil {:storage @storage})))))
+   (alter-var-root
+     #'conn
+     (constantly (d/create-conn nil {:storage @storage})))))
 
 (defn restore
   ([db]
    (t/log! {:level :info :db db} "restore")
    (reset! storage (make-storage db))
-   (alter-var-root #'conn (constantly (d/restore-conn @storage)))))
+   (alter-var-root #'conn
+     (constantly (d/restore-conn @storage))))) ;!!
 
 (defn start
   ([]
@@ -54,9 +56,10 @@
    (create!))
   ([db]
    (t/log! {:level :info :db db} "start datascript with sqlite backend.")
-   (if (.exists (io/file db))
-     (restore db)
-     (create! db))))
+   (let [db (io/file db)]
+     (if (.exists db)
+       (restore db)
+       (create! db)))))
 
 (defn stop []
   (t/log! :info "stop")
