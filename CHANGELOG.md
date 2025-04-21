@@ -3,7 +3,7 @@
 * avoid inline def.
 * separate benchmark/datascript/util?
 
-## 0.4.6-SNAPSHOT
+## 0.4.6 (2025-04-21)
 
 | :file    | :name                         | :current   | :latest    |
 |--------- | ----------------------------- | ---------- | -----------|
