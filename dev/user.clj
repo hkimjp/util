@@ -13,6 +13,7 @@
   (b/quick (b/tarai 10 5 3))
 
   (d/start "storage/db.sqlite")
+
   (d/conn?)
 
   (d/puts [{:db/add -1, :name "hiroshi", :age 18, :like "clojure"}])
