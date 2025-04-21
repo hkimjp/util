@@ -23,8 +23,6 @@
                              datasource
                              {:max-conn 10
                               :max-idle-conn 4})]
-      (t/log! {:lelvel :info :data {:datasource (str datasource)}}
-              "make-storage")
       (storage-sql/make pooled-datasource {:dbtype :sqlite}))
     (catch Exception e
       (t/log! :error (.getMessage e))
@@ -47,7 +45,7 @@
   ([db]
    (t/log! {:level :info :data {:db db}} "restore")
    (reset! storage (make-storage db))
-   (def conn (d/restore-conn @storage))))
+   (alter-var-root #'conn (constantly (d/restore-conn @storage)))))
 
 (defn start
   ([]
