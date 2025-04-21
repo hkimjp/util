@@ -7,10 +7,10 @@
   ([] (hello "Clojure"))
   ([s] (str "Hello " s)))
 
-(defn- probe
-  [msg any]
-  (prn msg any)
-  any)
+;; (defn- probe
+;;   [msg any]
+;;   (prn msg any)
+;;   any)
 
 ;; primes
 ;; Excerpted from "Programming Clojure, Third Edition",

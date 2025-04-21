@@ -3,6 +3,10 @@
 * avoid inline def.
 * separate benchmark/datascript/util?
 
+## 0.4.0-SNAPSHOT (2025-04-21)
+
+* datascript.clj - replaced `(def conn (...))` with `(alter-var-root #'conn (constantly ...))`
+
 ## 0.3.1 (2025-04-19)
 
 * did now work in micro-x.
