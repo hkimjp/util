@@ -13,7 +13,7 @@
   (b/time+ (b/tarai 10 5 3))
   (b/quick (b/tarai 10 5 3))
 
-  (d/start (io/file "storage/db.sqlite"))
+  (d/start "storage/db.sqlite")
 
   (d/conn?)
 
