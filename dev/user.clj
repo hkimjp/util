@@ -8,9 +8,9 @@
   (u/hello "github")
   (take 10 u/primes)
 
-  (time (b/tarai 10 5 3))
-  (b/time+ (b/tarai 10 5 3))
-  (b/quick (b/tarai 10 5 3))
+  ;; (time (b/tarai 10 5 3))
+  ;; (b/time+ (b/tarai 10 5 3))
+  ;; (b/quick (b/tarai 10 5 3))
 
   (d/start "storage/db.sqlite")
   (d/conn?)
