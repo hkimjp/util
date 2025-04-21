@@ -1,9 +1,10 @@
 (ns user
-  (:require [hkimjp.benchmark :as b]
-            [hkimjp.datascript :as d]
-            [hkimjp.util :as u]))
-(comment
+  (:require
+   [hkimjp.benchmark :as b]
+   [hkimjp.datascript :as d]
+   [hkimjp.util :as u]))
 
+(comment
   (u/hello "github")
   (take 10 u/primes)
 
@@ -11,30 +12,42 @@
   (b/time+ (b/tarai 10 5 3))
   (b/quick (b/tarai 10 5 3))
 
-  (d/put [{:db/add -1 :name "hirosi"}
-          {:db/add -1 :family "kimura"}
-          {:db/add -1 :age 62}])
-
-  (d/restore "target/db.sqlite")
+  (d/start "storage/db.sqlite")
   (d/conn?)
 
-  (d/q '[:find ?e ?name ?family ?age
+  (d/puts [{:db/add -1, :name "hiroshi", :age 18, :like "clojure"}])
+
+  (d/puts [{:db/id -1, :name "kimura"}
+           {:db/id -1, :database "DataScript"}])
+
+  (d/q '[:find ?name ?age ?like
          :where
          [?e :name ?name]
-         [?e :family ?family]
-         [?e :age ?age]])
+         [?e :age ?age]
+         [?e :like ?like]])
 
-  (d/restore "target/db.sqlite")
-  (d/q '[:find ?e
+  (d/q '[:find ?name ?database
          :where
-         [?e]])
-
-  (d/put [{:db/id -1 :name "hirosi"}
-          {:db/id -1 :family "kimura"}
-          {:db/id -1 :age 62}])
-
-  (d/pull 5)
-  (d/pull [:name] 4)
+         [?e :name ?name]
+         [?e :database ?database]])
 
   (d/stop)
+
+  (d/start "storage/db.sqlite")
+
+  (d/conn?)
+
+  (d/q '[:find ?name ?age ?like
+         :where
+         [?e :name ?name]
+         [?e :age ?age]
+         [?e :like ?like]])
+
+  (d/q '[:find ?name ?database
+         :where
+         [?e :name ?name]
+         [?e :database ?database]])
+
+  (d/stop)
+
   :rcf)

@@ -1,7 +1,28 @@
 ## Unreleased
 
 * avoid inline def.
-* benchmark/datascript/util を別々にしといたほうが使い勝手いいか？
+* separate benchmark/datascript/util?
+
+## 0.4.1 (2025-04-21)
+
+* added stroage/.keep
+
+## 0.4.0 (2025-04-21)
+
+* datascript.clj - replaced `(def conn (...))` with `(alter-var-root #'conn (constantly ...))`
+
+## 0.3.1 (2025-04-19)
+
+* did now work in micro-x.
+
+## 0.3.0 (2025-04-19)
+
+* (start) ... on-memory mode
+* (start "db") ... backend sqlite mode. "db" is the path of sqlite db saved.
+
+## 0.2.5 (2025-04-19)
+
+* changed `just dev` -> `just repl`, `just dev-container` -> `just container-repl`.
 
 ## 0.2.4 (2025-04-18)
 
@@ -24,10 +45,7 @@
 * BRAKING - datascript/create, restore takes argument `db`, such as "target/db.sqlite".
 * updated create, restore - if no db given, choose `target/db.sqlite`.
 
-
 ## 0.2.0 (2025-03-25)
-
-* 当たり前に deps を削ると jar が小さくなる。
 
 ## 0.1.0 (2025-03-25)
 

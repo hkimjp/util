@@ -1,16 +1,17 @@
 (ns hkimjp.util
   (:require [clojure.string :as str]
-            [clojure.math :as math]
+            ;; [clojure.math :as math]
+            ;; replace with self defined cartesian-product, cart?
             [clojure.math.combinatorics :as combo]))
 
 (defn hello
   ([] (hello "Clojure"))
   ([s] (str "Hello " s)))
 
-(defn- probe
-  [msg any]
-  (prn msg any)
-  any)
+;; (defn- probe
+;;   [msg any]
+;;   (prn msg any)
+;;   any)
 
 ;; primes
 ;; Excerpted from "Programming Clojure, Third Edition",
@@ -33,6 +34,11 @@
                         6 4 6 8 4 2 4 2 4 8 6 4 6 2  4  6
                         2 6 6 4 2 4 6 2 6 4 2 4 2 10 2 10])]
       (primes-from 11 wheel)))))
+
+(comment
+  (take 10 primes)
+  (last (take 100 primes))
+  :rcf)
 
 ; power
 ; (pow a b) returns double.
@@ -79,20 +85,20 @@
     :else (let [[n _] (div-multi-by-2 n [])]
             (prime?-aux n 3))))
 
-(defn- prime'-aux [n i]
-  (or (zero? (rem n i))
-      (zero? (rem n (+ i 2)))))
-
-(defn prime'
-  "need improve.
-   take twice time than `prime?`. maybe every? is slow?"
-  [n]
-  (cond
-    (< n 6) (or (= n 2) (= n 3) (= n 5))
-    (zero? (rem n 2)) false
-    (zero? (rem n 3)) false
-    :else (every? false?
-                  (map #(prime'-aux n %) (range 5 (+ (math/sqrt n) 1) 6)))))
+;;   "need improve.
+;;    take twice time than `prime?`. maybe every? is slow?"
+;; (defn- prime'-aux [n i]
+;;   (or (zero? (rem n i))
+;;       (zero? (rem n (+ i 2)))))
+;;
+;; (defn prime'
+;;   [n]
+;;   (cond
+;;     (< n 6) (or (= n 2) (= n 3) (= n 5))
+;;     (zero? (rem n 2)) false
+;;     (zero? (rem n 3)) false
+;;     :else (every? false?
+;;                   (map #(prime'-aux n %) (range 5 (+ (math/sqrt n) 1) 6)))))
 
 ; next-prime
 (defn next-prime
@@ -100,8 +106,10 @@
   [n]
   (-> (drop-while (complement prime?) (iterate inc (+ 1 n)))
       first))
+
 (comment
-  (= 119 (next-prime 117)))
+  (= (next-prime 117) 119)
+  :rcf)
 
 ; prime-pi
 (defn prime-pi
@@ -109,6 +117,10 @@
   [n]
   (-> (take-while #(< % n) primes)
       count))
+
+(comment
+  (=  (prime-pi 10000) 1229)
+  :rcf)
 
 ; cartesian product
 ; combo/cartesian-product
@@ -129,14 +141,14 @@
 
 ; divisors
 ; oridinaly definition
-(defn divisors'
-  "use divisors, which is 5 times faster than this."
-  [n]
-  (let [d1 (filter #(zero? (rem n %)) (range 1 (+ 1 (math/sqrt n))))
-        d2 (map #(quot n %) (reverse d1))]
-    (if (= (last d1) (first d2))
-      (concat d1 (rest d2))
-      (concat d1 d2))))
+;;   "use divisors, which is 5 times faster than this."
+;; (defn divisors'
+;;   [n]
+;;   (let [d1 (filter #(zero? (rem n %)) (range 1 (+ 1 (math/sqrt n))))
+;;         d2 (map #(quot n %) (reverse d1))]
+;;     (if (= (last d1) (first d2))
+;;       (concat d1 (rest d2))
+;;       (concat d1 d2))))
 
 (defn- factor-expand
   "(2 2 2) => (1 2 4 8)
@@ -150,6 +162,10 @@
        (map factor-expand)
        (apply combo/cartesian-product)
        (map #(reduce * %))))
+
+(comment
+  (divisors 1000)
+  :rcf)
 
 ; fold
 ; https://stackoverflow.com/questions/16800255/how-do-we-do-both-left-and-right-folds-in-clojure
@@ -233,4 +249,5 @@
     (time (.indexOf v 50000)) ; => 1.35ms
     (time (binary-search v 50001)) ; => 0.04ms
     (time (.indexOf v 50001)) ; => 2.14ms
-    ))
+    )
+  :rcf)
