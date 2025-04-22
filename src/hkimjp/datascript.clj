@@ -43,11 +43,12 @@
 
 ;; BUG in here.
 (defn- restore
-  ([db]
-   (t/log! :info "restore")
-   (reset! storage (make-storage db))
-   (alter-var-root #'conn
-                   (constantly (d/restore-conn @storage)))))
+  [db]
+  (t/log! {:level :info :data db} "restore")
+  (reset! storage (make-storage db))
+  (alter-var-root #'conn
+                  (constantly (d/restore-conn @storage)))  ; <-
+  (t/log! :info "restored"))
 
 (defn gc []
   (d/collect-garbage @storage))

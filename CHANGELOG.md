@@ -3,10 +3,9 @@
 * avoid inline def.
 * separate benchmark/datascript/util?
 
-## 0.4.7-SNAPSHOT
+## 0.4.8-SNAPSHOT (2025-04-22)
 
 * added src/hkimjp/datascript.clj/gc.
-
 
 ## 0.4.6 (2025-04-21)
 
