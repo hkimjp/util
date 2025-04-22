@@ -10,6 +10,9 @@
 
 (def conn nil)
 
+(defn conn? []
+  (d/conn? conn))
+
 (defn- shorten
   ([s] (shorten s 40))
   ([s n] (let [pat (re-pattern (str "(^.{" n "}).*"))]
@@ -28,9 +31,6 @@
       (t/log! :error (.getMessage e))
       (throw (Exception. "db dir does not exist.")))))
 
-(defn conn? []
-  (d/conn? conn))
-
 (defn- create!
   ([]
    (t/log! :info "create! on-memory datascript.")
@@ -41,12 +41,16 @@
    (alter-var-root #'conn
                    (constantly (d/create-conn nil {:storage @storage})))))
 
+;; BUG in here.
 (defn- restore
   ([db]
    (t/log! :info "restore")
    (reset! storage (make-storage db))
    (alter-var-root #'conn
                    (constantly (d/restore-conn @storage)))))
+
+(defn gc []
+  (d/collect-garbage @storage))
 
 (defn start
   ([]
@@ -62,15 +66,6 @@
   (t/log! :info "stop")
   (storage-sql/close @storage)
   (alter-var-root #'conn (constantly nil)))
-
-(comment
-  (start "storage/db.sqlite")
-  (conn?)
-  (stop)
-  (start "storage/db.sqlite")
-  (conn?)
-  (stop)
-  :rcf)
 
 ;; ----------------------------------------
 
