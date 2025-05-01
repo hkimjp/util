@@ -11,6 +11,7 @@ upgrade:
 upgrade-force:
   clojure -Tantq outdated :upgrade true :force true
 
+dev: repl
 repl:
   clojure -M:dev -m nrepl.cmdline
 

@@ -33,6 +33,8 @@
          [?e :name ?name]
          [?e :database ?database]])
 
+  (d/gc)
+
   (d/stop)
 
   (d/start (io/file "storage/db.sqlite"))

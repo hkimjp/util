@@ -2,6 +2,11 @@
 
 * avoid inline def.
 * separate benchmark/datascript/util?
+* when using datascript.clj from micro-x, can not restore.
+
+## 0.4.9 (2025-05-01)
+
+* added src/hkimjp/datascript.clj/gc.
 
 ## 0.4.6 (2025-04-21)
 

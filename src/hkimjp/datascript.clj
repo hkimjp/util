@@ -10,12 +10,11 @@
 
 (def conn nil)
 
-(defn- shorten
-  ([s] (shorten s 40))
-  ([s n] (let [pat (re-pattern (str "(^.{" n "}).*"))]
-           (str/replace-first s pat "$1..."))))
+(defn conn? []
+  (d/conn? conn))
 
 (defn- make-storage [db]
+  (t/log! :info (str "make-stroage " db))
   (try
     (let [datasource (doto (org.sqlite.SQLiteDataSource.)
                        (.setUrl (str "jdbc:sqlite:" db)))
@@ -28,73 +27,62 @@
       (t/log! :error (.getMessage e))
       (throw (Exception. "db dir does not exist.")))))
 
-(defn conn? []
-  (d/conn? conn))
-
-(defn- create!
+(defn- create
   ([]
-   (t/log! :info "create! on-memory datascript.")
-   (alter-var-root #'conn (constantly (d/create-conn nil))))
+   (t/log! :info "create on-memory datascript.")
+   (d/create-conn nil))
   ([db]
-   (t/log! :info "create! sqlite backended datascript.")
    (reset! storage (make-storage db))
-   (alter-var-root #'conn
-                   (constantly (d/create-conn nil {:storage @storage})))))
+   (t/log! :info "create sqlite backended datascript.")
+   (d/create-conn nil {:storage @storage})))
 
 (defn- restore
-  ([db]
-   (t/log! :info "restore")
-   (reset! storage (make-storage db))
-   (alter-var-root #'conn
-                   (constantly (d/restore-conn @storage)))))
+  [db]
+  (t/log! {:level :info :data db} "restore")
+  (reset! storage (make-storage db))
+  (d/restore-conn @storage))
+
+(defn gc []
+  (d/collect-garbage @storage))
 
 (defn start
   ([]
    (t/log! :info "start on-memory datascript.")
-   (create!))
+   (alter-var-root #'conn (constantly (create))))
   ([db]
    (t/log! :info "start datascript with sqlite backend.")
    (if (.exists (io/file db))
-     (restore db)
-     (create! db))))
+     (alter-var-root #'conn (constantly (restore db)))
+     (alter-var-root #'conn (constantly (create db))))))
 
 (defn stop []
-  (t/log! :info "stop")
+  (t/log! :info "db stopped")
   (storage-sql/close @storage)
   (alter-var-root #'conn (constantly nil)))
 
-(comment
-  (start "storage/db.sqlite")
-  (conn?)
-  (stop)
-  (start "storage/db.sqlite")
-  (conn?)
-  (stop)
-  :rcf)
-
-;; ----------------------------------------
-
-(defmacro q [query & inputs]
-  (t/log! :info (str "q " (shorten query)))
-  `(d/q ~query @conn ~@inputs))
+;------------------------------------------
 
 (defn put [fact]
-  (t/log! :info (str "put " (shorten fact)))
+  (t/log! :info (str "put " fact))
   (d/transact! conn [fact]))
+
+(defn- shorten
+  ([s] (shorten s 80))
+  ([s n] (let [pat (re-pattern (str "(^.{" n "}).*"))]
+           (str/replace-first s pat "$1..."))))
 
 (defn puts [facts]
   (t/log! :info (str "put " (shorten facts)))
   (d/transact! conn facts))
 
+(defmacro q [query & inputs]
+  (t/log! :info (str "q " query))
+  `(d/q ~query @conn ~@inputs))
+
 (defn pull
-  ([eid] (pull ['*] eid))
+  ([eid] (pull '[*] eid))
   ([selector eid]
    (t/log! :info (str "pull " selector " " eid))
    (d/pull @conn selector eid)))
 
-(comment
-  (start)
-  (put [{:db/id 100 :fact "fact"}])
-  (pull 100)
-  (stop)
-  :rcf)
+
