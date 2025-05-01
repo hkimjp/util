@@ -4,7 +4,7 @@
 * separate benchmark/datascript/util?
 * when using datascript.clj from micro-x, can not restore.
 
-## 0.4.9-SNAPSHOT (2025-05-01)
+## 0.4.9 (2025-05-01)
 
 * added src/hkimjp/datascript.clj/gc.
 
