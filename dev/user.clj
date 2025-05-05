@@ -17,8 +17,12 @@
 
   (d/conn?)
 
+  (d/puts [{:db/add -1, :now (java.util.Date.)}])
+  (d/puts [{:db/add -1, :now (java.util.Date.)}])
   (d/puts [{:db/add -1, :name "hiroshi", :age 18, :like "clojure"}])
-
+  (d/q '[:find ?now
+         :where
+         [?e :now ?now]])
   (d/puts [{:db/id -1, :name "kimura"}
            {:db/id -1, :database "DataScript"}])
 
