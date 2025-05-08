@@ -4,9 +4,10 @@
 * separate benchmark/datascript/util?
 * when using datascript.clj from micro-x, can not restore.
 
+
 ## 0.5.0-SNAPSHOT (2025-05-08)
 
-* added taoensso/carmine
+* added com.taoensso/carmine 3.4.1
 * updated libraries
 
 | :file    | :name                         | :current  | :latest |

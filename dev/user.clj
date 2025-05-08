@@ -2,8 +2,24 @@
   (:require
    [clojure.java.io :as io]
    [hkimjp.benchmark :as b]
+   [hkimjp.carmine :as c]
    [hkimjp.datascript :as d]
    [hkimjp.util :as u]))
+
+(comment
+  ; carmine
+
+  (c/set "foo" "bar")
+  (c/get "foo")
+
+  (doseq [n (range 10)]
+    (c/setex (str "foo:" n) 10 n))
+
+  (c/keys "foo:*")
+
+  (c/ttl "foo:1")
+
+  :rcf)
 
 (comment
   (u/hello "github")
@@ -16,7 +32,6 @@
   (d/start "storage/db.sqlite")
 
   (d/conn?)
-
 
   (d/puts [{:db/add -1, :name "hiroshi", :age 18, :like "clojure"}])
   (d/puts [{:db/id -1, :name "kimura"}
