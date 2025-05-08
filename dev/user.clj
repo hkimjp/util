@@ -17,8 +17,8 @@
 
   (d/conn?)
 
-  (d/puts [{:db/add -1, :name "hiroshi", :age 18, :like "clojure"}])
 
+  (d/puts [{:db/add -1, :name "hiroshi", :age 18, :like "clojure"}])
   (d/puts [{:db/id -1, :name "kimura"}
            {:db/id -1, :database "DataScript"}])
 

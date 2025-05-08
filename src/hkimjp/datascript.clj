@@ -58,26 +58,23 @@
 (defn stop []
   (t/log! :info "db stopped")
   (storage-sql/close @storage)
+  (reset! storage nil)
   (alter-var-root #'conn (constantly nil)))
 
 ;------------------------------------------
 
-(defn put [fact]
-  (t/log! :info (str "put " fact))
-  (d/transact! conn [fact]))
+(defmacro q [query & inputs]
+  (t/log! :info (str "q " query))
+  `(d/q ~query @conn ~@inputs))
 
 (defn- shorten
   ([s] (shorten s 80))
   ([s n] (let [pat (re-pattern (str "(^.{" n "}).*"))]
            (str/replace-first s pat "$1..."))))
 
-(defn puts [facts]
+(defn put! [facts]
   (t/log! :info (str "put " (shorten facts)))
   (d/transact! conn facts))
-
-(defmacro q [query & inputs]
-  (t/log! :info (str "q " query))
-  `(d/q ~query @conn ~@inputs))
 
 (defn pull
   ([eid] (pull '[*] eid))
@@ -85,4 +82,8 @@
    (t/log! :info (str "pull " selector " " eid))
    (d/pull @conn selector eid)))
 
+(defn entity
+  [eid]
+  (t/log! :info (str "entity" eid))
+  (d/entity @conn eid))
 
