@@ -16,7 +16,6 @@
 |          | datascript/datascript         | 1.7.4     | 1.7.5   |
 |          | io.github.tonsky/clj-reload   | 0.9.4     | 0.9.5   |
 |          | io.github.tonsky/clojure-plus | 1.3.3     | 1.4.0   |
-| pom.xml  | org.clojure/clojure           | 0.4.9     | 1.12.0  |
 
 ## 0.4.9 (2025-05-01)
 
@@ -30,7 +29,6 @@
 |          | dev.weavejester/cljfmt        | 0.13.0     | 0.13.1     |
 |          | io.github.clojure/tools.build | v0.9.2     | v0.10.8    |
 |          | io.github.tonsky/clojure-plus | 1.3.1      | 1.3.3      |
-| pom.xml  | org.clojure/clojure           | 0.4.5      | 1.12.0     |
 
 
 ## 0.4.1 (2025-04-21)
