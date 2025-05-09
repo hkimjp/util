@@ -9,32 +9,28 @@
 (comment
   ; carmine
 
-  (c/set "foo" "bar")
-  (c/get "foo")
+  (defn sorted [key]
+    (let [keys (c/keys key)]
+      (->> (map (fn [k] [k (c/get k)]) keys)
+           (sort-by second)
+           reverse)))
 
-  (doseq [n (range 10)]
-    (c/setex (str "foo:" n) 10 n))
+  (doseq [n (range 1, 10)]
+    (c/setex (str "foo:" n) (* 2 n) n))
 
-  (c/keys "foo:*")
-
-  (c/ttl "foo:1")
+  (sorted "foo:*")
 
   :rcf)
 
 (comment
-  (u/hello "github")
-  (take 10 u/primes)
-
-  (time (b/tarai 10 5 3))
-  (b/time+ (b/tarai 10 5 3))
-  (b/quick (b/tarai 10 5 3))
+  ; datascript
 
   (d/start "storage/db.sqlite")
 
   (d/conn?)
 
-  (d/puts [{:db/add -1, :name "hiroshi", :age 18, :like "clojure"}])
-  (d/puts [{:db/id -1, :name "kimura"}
+  (d/put! [{:db/add -1, :name "hiroshi", :age 18, :like "clojure"}])
+  (d/put! [{:db/id -1, :name "kimura"}
            {:db/id -1, :database "DataScript"}])
 
   (d/q '[:find ?name ?age ?like
