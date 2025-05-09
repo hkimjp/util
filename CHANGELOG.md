@@ -4,6 +4,20 @@
 * separate benchmark/datascript/util?
 * when using datascript.clj from micro-x, can not restore.
 
+
+## 0.5.0-SNAPSHOT (2025-05-08)
+
+* added com.taoensso/carmine 3.4.1
+* updated libraries
+
+| :file    | :name                         | :current  | :latest |
+|--------- | ----------------------------- | --------- | --------|
+| deps.edn | com.taoensso/telemere         | 1.0.0-RC5 | 1.0.0   |
+|          | datascript/datascript         | 1.7.4     | 1.7.5   |
+|          | io.github.tonsky/clj-reload   | 0.9.4     | 0.9.5   |
+|          | io.github.tonsky/clojure-plus | 1.3.3     | 1.4.0   |
+| pom.xml  | org.clojure/clojure           | 0.4.9     | 1.12.0  |
+
 ## 0.4.9 (2025-05-01)
 
 * added src/hkimjp/datascript.clj/gc.
