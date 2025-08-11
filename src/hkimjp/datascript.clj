@@ -63,27 +63,27 @@
 
 ;------------------------------------------
 
-(defmacro q [query & inputs]
-  (t/log! :info (str "q " query))
-  `(d/q ~query @conn ~@inputs))
-
 (defn- shorten
   ([s] (shorten s 80))
   ([s n] (let [pat (re-pattern (str "(^.{" n "}).*"))]
            (str/replace-first s pat "$1..."))))
 
+(defmacro q? [query & inputs]
+  (t/log! :info (str "q " query))
+  `(d/q ~query @conn ~@inputs))
+
 (defn put! [facts]
-  (t/log! :info (str "put " (shorten facts)))
+  (t/log! :info (str "put! " (shorten facts)))
   (d/transact! conn facts))
 
-(defn pull
+(defn pull?
   ([eid] (pull '[*] eid))
   ([selector eid]
-   (t/log! :info (str "pull " selector " " eid))
+   (t/log! :info (str "pull? " selector " " eid))
    (d/pull @conn selector eid)))
 
-(defn entity
+(defn entity?
   [eid]
-  (t/log! :info (str "entity" eid))
+  (t/log! :info (str "entity? " eid))
   (d/entity @conn eid))
 
